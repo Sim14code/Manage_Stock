@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouse Inventory</title>
+    <style>
+        :root {
+            --primary: #1976d2;
+            --bg: #f7f7f7;
+            --container-bg: #fff;
+            --text: #222;
+            --table-header: #f0f0f0;
+            --input-bg: #f9f9f9;
+            --input-border: #cfd8dc;
+            --input-focus: #1976d2;
+        }
+        body.light-mode {
+            --primary: #1976d2;
+            --bg: #f7f7f7;
+            --container-bg: #fff;
+            --text: #222;
+            --table-header: #f0f0f0;
+            --input-bg: #f9f9f9;
+            --input-border: #cfd8dc;
+            --input-focus: #1976d2;
+        }
+        body.dark-mode {
+            --primary: #222e3c;
+            --bg: #181a1b;
+            --container-bg: #23272b;
+            --text: #f7f7f7;
+            --table-header: #222e3c;
+            --input-bg: #23272b;
+            --input-border: #444b53;
+            --input-focus: #90caf9;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            margin: 0; padding: 0;
+            color: var(--text);
+            transition: background 0.2s, color 0.2s;
+        }
+        .navbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 1em 2em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 2em;
+            font-weight: bold;
+        }
+        .navbar button {
+            background: #fff;
+            color: var(--primary);
+            border: none;
+            padding: 0.4em 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, color 0.2s;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2em auto;
+            background: var(--container-bg);
+            padding: 2em;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 1.2em;
+            font-weight: bold;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { padding: 0.7em 1em; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: var(--table-header); }
+        tr:last-child td { border-bottom: none; }
+        button, input[type=submit] {
+            background: var(--primary); color: #fff; border: none; padding: 0.6em 1.5em; border-radius: 4px; cursor: pointer;
+            font-size: 1em; font-weight: 600; margin-top: 0.5em;
+            transition: background 0.2s, color 0.2s;
+        }
+        button:hover, input[type=submit]:hover, a.button-link:hover {
+            background: #1251a3;
+        }
+        a.button-link { background: var(--primary); color: #fff; padding: 0.5em 1.2em; border-radius: 4px; text-decoration: none; font-weight: 600; margin-left: 0.5em; }
+        form { margin-top: 1em; }
+        .actions { margin-bottom: 1em; }
+        /* Modern form styles */
+        form label {
+            display: block;
+            margin-bottom: 0.3em;
+            font-weight: 500;
+        }
+        form .form-row {
+            display: block;
+            margin-bottom: 1.2em;
+        }
+        .button-row {
+            display: flex;
+            gap: 1em;
+            align-items: center;
+            margin-top: 1.5em;
+            padding-left: 0;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 1em; }
+            .navbar { flex-direction: column; align-items: flex-start; }
+            .navbar .nav-links { flex-direction: column; }
+            .navbar a { margin-bottom: 0.5em; margin-right: 0; }
+            form .form-row { flex-direction: column; gap: 0.5em; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="{% url 'inventory' %}">Inventory</a>
+            <a href="{% url 'product-list' %}">Products</a>
+            <a href="{% url 'transaction-list' %}">Transactions</a>
+        </div>
+        <button id="theme-toggle" type="button">🌙 Dark Mode</button>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        // Theme toggle logic
+        const btn = document.getElementById('theme-toggle');
+        const body = document.body;
+        function setTheme(mode) {
+            if (mode === 'dark') {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                btn.textContent = '☀️ Light Mode';
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                btn.textContent = '🌙 Dark Mode';
+            }
+        }
+        // Load theme from localStorage
+        const saved = localStorage.getItem('theme-mode');
+        if (saved) setTheme(saved);
+        btn.onclick = function() {
+            const isDark = body.classList.contains('dark-mode');
+            setTheme(isDark ? 'light' : 'dark');
+            localStorage.setItem('theme-mode', isDark ? 'light' : 'dark');
+        };
+    </script>
+</body>
+</html> 

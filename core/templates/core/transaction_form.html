@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load dict_get %}
+{% block content %}
+<h1>Add Stock Transaction</h1>
+<form method="post">{% csrf_token %}
+    <div class="form-row">
+        {{ form.operation.label_tag }}
+        {{ form.operation }}
+    </div>
+    <div class="form-row">
+        {{ form.reference.label_tag }}
+        {{ form.reference }}
+    </div>
+    <h3>Products in Transaction</h3>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <div class="form-row">
+            {{ form.product.label_tag }}
+            {{ form.product }}
+        </div>
+        <div class="form-row">
+            {{ form.quantity.label_tag }}
+            {{ form.quantity }}
+            {% if form.product.value %}
+                <span style="margin-left:1em; color:#888; font-size:0.95em;">
+                    Current stock: {{ inventory|dict_get:form.product.value }}
+                </span>
+            {% endif %}
+            {% if form.DELETE %}<label>{{ form.DELETE }} Delete</label>{% endif %}
+        </div>
+    {% endfor %}
+    <div class="button-row">
+        <button type="submit">Save</button>
+        <a href="{% url 'transaction-list' %}" class="button-link">Back to Transactions</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1>Inventory</h1>
+<table>
+    <tr><th>Product</th><th>SKU</th><th>Quantity</th></tr>
+    {% for item in inventory %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.product.sku }}</td>
+        <td>
+            {% if item.quantity == 0 %}
+                <span style="color: red; font-weight: bold;">Out of Stock</span>
+            {% elif item.quantity < 5 %}
+                <span style="color: orange; font-weight: bold;">Low ({{ item.quantity }})</span>
+            {% else %}
+                {{ item.quantity }}
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No inventory data.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

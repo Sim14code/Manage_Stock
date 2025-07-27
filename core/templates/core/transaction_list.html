@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1>Stock Transactions</h1>
+<div class="actions">
+    <a href="{% url 'transaction-add' %}" class="button-link">Add Transaction</a>
+</div>
+<table>
+    <tr><th>ID</th><th>Date</th><th>Type</th><th>Reference</th></tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.date }}</td>
+        <td>{{ transaction.get_operation_display }}</td>
+        <td>{{ transaction.reference }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No transactions found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
